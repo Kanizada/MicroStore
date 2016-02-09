@@ -1,0 +1,92 @@
+{% extends 'layout.html.twig' %}
+
+{% block pageTitle %}Authentification{% endblock %}
+
+
+{% block navBar %}
+	{% include 'admin/adminNav.html.twig' %}
+{% endblock %}
+
+{% block pageContent %}
+<table class="table table-responsive table-bordered table-hover">
+	<thead class="text-center">
+	<tr>
+		<th>
+			Identifiant :
+		</th>
+		<th>
+			Nom :
+		</th>
+		<th>
+			Description :
+		</th>
+		<th>
+			Prix/Kilo :
+		</th>
+		<th>
+			Image :
+		</th>
+		<th>
+			Stock :
+		</th>
+		<th>
+			Actions :
+		</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for produit in tableauProduits %}
+		<tr class="infoTr text-center">
+			<td><input class="id" type="text" class="form-control text-center" value="{{ produit.getIdProduit() }}" readonly></td>
+			<td><input class="nom" type="text" class="form-control text-center" value="{{ produit.getNomProduit() }}"></td>
+			<td><textarea class="description" type="text" class="form-control">{{ produit.getDescriptionProduit() }}</textarea></td>
+			<td><input class="prixKilo" type="number" class="form-control text-center" value="{{ produit.getPrixKiloProduit() }}"></td>
+			<td><input class="image" type="text" class="form-control text-center" value="{{ produit.getImageProduit() }}"></td>
+			<td><input class="quantite" type="number" class="form-control text-center" value="{{ produit.getStock() }}"></td>
+			<td class="actions"><button class="btn btn-md btn-default btnSend">Sauvegarder les informations <span class="glyphicon glyphicon-pencil"></span></button><br/><br/>
+			<button class="btn btn-md btn-danger pull-left btnRemove" data-id="{{ produit.getIdProduit() }}">Supprimer le produit <span class="glyphicon glyphicon-remove"></span></button></td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<a class="btn btn-md btn-success btnAdd pull-right" href="{{ path('addProd') }}">Ajouter un produit <span class="glyphicon glyphicon-shopping-cart"></span></a>
+<script type="text/javascript">
+	$(".btnSend").click(function(){
+		var id = $(this).closest(".infoTr").find('.id').val();
+		var nom = $(this).closest(".infoTr").find('.nom').val();
+		var description = $(this).closest(".infoTr").find('.description').val();
+		var prixKilo = $(this).closest(".infoTr").find('.prixKilo').val();
+		var image = $(this).closest(".infoTr").find('.image').val();
+		var quantite = $(this).closest(".infoTr").find('.quantite').val();
+
+		$.ajax({
+			url: "{{ path('changeProdScr') }}",
+			type: "POST",
+			data: {id: id, nom: nom, description: description, prixKilo: prixKilo, image: image, quantite: quantite},
+			success: function(data){
+				console.log(data);
+				console.log("ok");
+			}
+		});
+		
+	});
+
+	$(".btnRemove").click(function(){
+		var r = confirm("Voulez-vous vraiment supprimer le produit du panier ?");
+		if (r == true) {
+			var id = $(this).closest(".infoTr").find('.id').val();
+			var trc = $(this).closest(".infoTr");
+			$.ajax({
+				url: "{{ path('supprProdScr') }}",
+				type: "POST",
+				data: {id: id},
+				success: function(data){
+					console.log(data);
+					trc.remove();
+				}
+			});
+		}
+	});
+
+</script>
+{% endblock %}

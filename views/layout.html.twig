@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			{% block pageTitle %}
+				Le Fruit, le Béret, la Cocarde
+			{% endblock %}
+		</title>
+		{% block pageHeaders %}
+		<meta charset="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="/twitter-bootstrap/css/bootstrap.css">
+		<link rel="shortcut icon" href="/pics/LogoC.ico">
+		<script type="text/javascript" src="/jquery/jquery.js"></script>
+		<script type="text/javascript" src="/twitter-bootstrap/js/bootstrap.js"></script>
+		<link rel="stylesheet" href="/microstore.css"/>
+		{% endblock %}
+	</head>
+	<body>
+		{% block navBar %}
+			{% include 'defaultNav.html.twig' %}
+		{% endblock %}
+		<div class="container">
+			{% block pageContent %}
+				<img class="img-responsive center-block" id="logoHome" src="pics/logo.png">
+				<hr class="featurette-divider">
+				<!-- First Featurette -->
+				<div class="featurette" id="about">
+					<img class="featurette-image img-circle img-responsive pull-right" src="pics/LogoC.png">
+					<h2 class="featurette-heading">Une Entreprise Innovatrice, <br/>
+					<span class="text-muted">Gage de Détermination</span>
+					</h2>
+					<p class="lead">Le fruit, Le béret et la cocarde, une entreprise ingénieuse et amibitieuse qui vous propose une sélection de fruits tout récemment sorti de terre et cultivé par nos agriculteurs français.</p>
+				</div>
+				<hr class="featurette-divider">
+				<!-- Second Featurette -->
+				<div class="featurette" id="services">
+					<img class="featurette-image img-circle img-responsive pull-left" src="pics/visu-made-in-france.png">
+					<h2 class="featurette-heading">Une Entreprise Française, <br/>
+					<span class="text-muted">Gage De Qualité</span>
+					</h2>
+					<p class="lead">La représentation de la France tient une place particulière au sein de l’entreprise. Nous revendiquons des produits “Made In France”, gage de qualité absolue et de soutien à nos agriculteurs locaux.</p>
+				</div>
+				<hr class="featurette-divider">
+				<!-- Third Featurette -->
+				<div class="featurette" id="contact">
+					<img class="featurette-image img-circle img-responsive pull-right" src="pics/Produit/cerise.jpg">
+					<h2 class="featurette-heading">Un Procédé Astucieux, <br/>
+					<span class="text-muted">Gage De Simplicité</span>
+					</h2>
+					<p class="lead">Le fruit, le béret et la cocarde montre aussi un immense potentiel dans la livraison de nos produits à domicile, comme n’importe quelle autre denrée. Les fruits sont “réservés” directement sur Internet, puis nous nous mettons en contact avec l’agriculteur le plus proche de chez vous qui cueillera le fruit pour ensuite être livré chez vous sous 2 jours ouvrés !</p>
+				</div>
+				<hr class="featurette-divider">
+			{% endblock %}			
+		</div>
+		<br/>
+		<div id="table">
+		</div>
+<!-- 		<footer class="footer">
+	<div class="container">
+		<div>
+			<ul class="col-lg-4 col-md-4 col-sm-4">
+				<h4 class="text-center">Plus d'infos sur nous !</h4>
+				<hr/>
+				<li><a href="">Contact</a></li>
+				<li><a href="">Qui sommes-nous ?</a> </li>
+				<li><a href="">L'équipe</a> </li>
+				<li><a href="">Publicité</a> </li>
+			</ul>
+		</div>
+		<div>
+			<ul class="col-lg-4 col-md-4 col-sm-4">
+				<h4 class="text-center">Aide</h4>
+				<hr/>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Assistance site</a></li>
+			</ul>
+		</div>
+		<div>
+			<ul class="col-lg-4 col-md-4 col-sm-4">
+				<h4 class="text-center">Communauté</h4>
+				<hr/>
+				<li><a href="">Forums</a></li>
+				<li><a href="">Suivez-nous sur Facebook</a></li>
+				<li><a href="">Suivez-nous sur Twitter</a></li>
+			</ul>
+		</div>
+
+		<p class="text-center footerSentence">Site encore en développement.</p>
+		<p class="text-center">Copyright &copy; 2015 All Rights Reserved.</p>
+	</div>
+</footer>
+<footer class="footer">
+	<div class="container">
+		<div>
+			<ul class="col-lg-4 col-md-4 col-sm-4">
+				<h4 class="text-center">Plus d'infos sur nous !</h4>
+				<hr/>
+				<li><a href="">Contact</a></li>
+				<li><a href="">Qui sommes-nous ?</a> </li>
+				<li><a href="">L'équipe</a> </li>
+				<li><a href="">Publicité</a> </li>
+			</ul>
+		</div>
+		<div>
+			<ul class="col-lg-4 col-md-4 col-sm-4">
+				<h4 class="text-center">Aide</h4>
+				<hr/>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Assistance site</a></li>
+			</ul>
+		</div>
+		<div>
+			<ul class="col-lg-4 col-md-4 col-sm-4">
+				<h4 class="text-center">Communauté</h4>
+				<hr/>
+				<li><a href="">Forums</a></li>
+				<li><a href="">Suivez-nous sur Facebook</a></li>
+				<li><a href="">Suivez-nous sur Twitter</a></li>
+			</ul>
+		</div>
+
+		<p class="text-center footerSentence">Site encore en développement.</p>
+		<p class="text-center">Copyright &copy; 2015 All Rights Reserved.</p>
+	</div>
+</footer> -->
+	</body>
+</html>
+
+
+
+

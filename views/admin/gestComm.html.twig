@@ -1,0 +1,94 @@
+{% extends 'layout.html.twig' %}
+
+{% block pageTitle %}Authentification{% endblock %}
+
+
+{% block navBar %}
+	{% include 'admin/adminNav.html.twig' %}
+{% endblock %}
+
+{% block pageContent %}
+{% set alertTypeAvaillable = [ 'info', 'success', 'warning', 'error'] %}
+{% if app.session.flashBag is defined %}
+    {%- for alertType in alertTypeAvaillable %}
+        {%- for alert in app.session.flashBag.get(alertType) %}
+                    <div class="alert alert-{{ alertType }}" >
+                        <button class="close" data-dismiss="alert">×</button>
+                        {% if alert.title %}<h4 class="alert-heading">{{ alert.title|trans }}</h4>{% endif %}
+                        {{ alert.message|trans }}
+                    </div>
+        {%- endfor %}
+    {%- endfor %}
+{% endif %}
+
+<table class="table table-responsive table-bordered table-hover">
+	<thead class="text-center">
+	<tr>
+		<th>
+			Numéro de commande :
+		</th>
+		<th>
+			Identifiant de l'utilisateur :
+		</th>
+		<th>
+			État de la commande :
+		</th>
+		<th>
+			Action :
+		</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for commande in tableauCommandes %}
+		<tr class="infoTr text-center">
+			<td><input type="text" class="form-control text-center idCom" name="idCom" value="{{ commande.getComId() }}" readonly></td>
+			<td><input type="text" class="form-control text-center idUsr" name="idUsr" value="{{ commande.getUsrId() }}" readonly></td>
+			<td>
+				<select class="form-control etat" name="etat" {% if commande.getComEtat() == "Expédiée" %}disabled="true"{% endif %}>
+				  <option value="En attente" {% if commande.getComEtat() == "En attente" %}selected="true"{% endif %}>En attente</option>
+				  <option value="Expédiée" {% if commande.getComEtat() == "Expédiée" %}selected="true"{% endif %}>Expédiée</option>
+				  <option value="Annulée" {% if commande.getComEtat() == "Annulée" %}selected="true"{% endif %}>Annulée</option>
+				</select>
+			</td>
+			<td class="actions"><button class="btn btn-md btn-default btnSend">Sauvegarder les informations <span class="glyphicon glyphicon-pencil"></span></button> <span class="glyphicon glyphicon-ok valid" hidden></span>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	$('.valid').css("display", "none");
+	$(".btnSend").click(function(event){
+  		event.preventDefault();
+  		var tmpObject = $(this);
+		var idCom = $(this).closest(".infoTr").find('.idCom').val();
+		console.log(idCom);
+		var etat = $(this).closest(".infoTr").find('.etat').val();
+		console.log(etat);
+
+		$.ajax({
+			url: "{{ path('changeCommScr') }}",
+			type: "POST",
+			data: {idCom: idCom, etat: etat},
+			success: function(data){
+				console.log(data);
+				console.log("ok");
+				if(data == "error"){
+					window.location.href = "{{ path('gestComm') }}";
+				} else {
+					if(data == "Expédiée"){
+						tmpObject.closest(".infoTr").find('.etat').prop("disabled", "true");
+					}
+					tmpObject.closest(".infoTr").find('.valid').fadeIn(300);
+					setTimeout(function(){
+						tmpObject.closest(".infoTr").find('.valid').fadeOut(1500);
+					}, 750);
+				}
+			}
+		});
+
+	});
+</script>
+
+<!-- TODO: Etat commande : En attente, Payée, Expédiée, Arrivée, Annulée	 -->
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+{% block navBar %}
+	{% include 'defaultNav.html.twig' %}
+{% endblock %}
+{% block pageTitle %}Changer de mail{% endblock %}
+
+{% block pageContent %}
+	<div class="well">
+		<form class="form-signin form-horizontal" role="form" action="changeMailScrU" method="post">
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<input id="change_id" type="hidden" name="_id" class="form-control" value="{{ app.user.id }}"><br/>
+    				<label for="change_mail">Nouvelle adresse mail</label>
+					<input id="change_mail" type="mail" name="_mail" class="form-control" value="{{ app.user.mail }}"><br/>
+					<button type="submit" class="btn btn-default btn-primary pull-right"><span class="glyphicon glyphicon-log-in"></span> Modifier</button>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends 'layout.html.twig' %}
+{% block navBar %}
+	{% include 'defaultNav.html.twig' %}
+{% endblock %}
+{% block pageTitle %}Page de profil{% endblock %}
+
+{% block pageContent %}
+<div class="row">
+	<div class="jumbotron">
+		<div class="text-center">
+			<h3><u>Vos informations personnelles</u> :</h3>
+			<div><u>Nom d'utilisateur</u> : {{ app.user.username }}</div>
+			<div><u>Adresse mail</u> : {{ app.user.mail }}</div>
+			<div><u>Ville</u> : {{ app.user.ville }}</div>
+			<div><u>Adresse</u> : {{ app.user.adresse }}</div>
+			<div><u>Téléphone</u> : {{ app.user.telephone }}</div>
+			{% if is_granted('ROLE_ADMIN') %}
+			<div><u>Rang</u> : {{ app.user.role }}</div>
+			{% endif %}
+		</div>
+	</div>
+</div>		
+<div class="row">
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-lock"></span></div>
+					</div>
+					<div class="col-xs-10 text-left">
+						<div class="">Envie de changer son mot de passe ?</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('changePassU')}}"><span class="pull-left">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-green">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-earphone"></span></div>
+					</div>
+					<div class="col-xs-10 text-left">
+						<div class="">Envie de changer le numéro de téléphone qui vous est attribué ?</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('changeTelU')}}"><span class="pull-left">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-yellow">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-home"></span></div>
+					</div>
+					<div class="col-xs-10 text-left">
+						<div class="">Changement d'adresse ? Indiquez nous où apporter vos fruits !</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('changeAdrU')}}"><span class="pull-left">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-red">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-envelope"></span></div>
+					</div>
+					<div class="col-xs-10 text-left">
+						<div class="">Nouvelle adresse mail ?</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('changeMailU')}}"><span class="pull-left">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-brown">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-piggy-bank"></span></div>
+					</div>
+					<div class="col-xs-10 text-left">
+						<div class="">Le suivie de vos commandes vous intéresse ?</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('affichCommU')}}"><span class="pull-left">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

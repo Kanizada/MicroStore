@@ -1,0 +1,76 @@
+{% extends 'layout.html.twig' %}
+{% block navBar %}
+    {% include 'admin/adminNav.html.twig' %}
+{% endblock %}
+{% block pageContent %}
+<div class="row">
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-user"></span></div>
+					</div>
+					<div class="col-xs-10 text-right">
+						<div class="midhuge">Gestion des utilisateurs</div>
+						<div class="midhuge">{{ quantiteUsers }} membre{% if quantiteUsers > 1 %}s{% endif %}</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('gestUsers')}}"><span class="pull-left semimidhuge">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right midhuge"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-green">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-apple"></span></div>
+					</div>
+					<div class="col-xs-10 text-right">
+						<div class="midhuge">Gestion des produits</div>
+						<div class="midhuge">{{ quantiteProduits }} produit{% if quantiteProduits > 1 %}s{% endif %}</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('gestProds')}}"><span class="pull-left semimidhuge">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right midhuge"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-6">
+		<div class="panel panel-yellow">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-2">
+						<div class="huge"><span class="glyphicon glyphicon-piggy-bank"></span></div>
+					</div>
+					<div class="col-xs-10 text-right">
+						<div class="midhuge">Gestion des commandes</div>
+						<div class="midhuge">{{ quantiteCommandes }} commande{% if quantiteCommandes > 1 %}s{% endif %}</div>
+					</div>
+				</div>
+			</div>
+			<a href="#">
+				<div class="panel-footer">
+					<a href="{{ path('gestComm')}}"><span class="pull-left semimidhuge">C'est par ici !</span>
+					<span class="pull-right"><span class="glyphicon glyphicon-circle-arrow-right midhuge"></span></span>
+					</a>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+{% endblock %}

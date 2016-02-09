@@ -1,0 +1,132 @@
+{% extends 'layout.html.twig' %}
+{% block navBar %}
+	{% include 'defaultNav.html.twig' %}
+{% endblock %}
+{% block pageTitle %}Panier{% endblock %}
+{% block pageContent %}
+<div class="alert alert-success" id="infoAlert" role="alert" hidden></div>
+{% set alertTypeAvaillable = [ 'info', 'success', 'warning', 'error'] %}
+{% if app.session.flashBag is defined %}
+    {%- for alertType in alertTypeAvaillable %}
+        {%- for alert in app.session.flashBag.get(alertType) %}
+                    <div class="alert alert-{{ alertType }}" >
+                        <button class="close" data-dismiss="alert">×</button>
+                        {% if alert.title %}<h4 class="alert-heading">{{ alert.title|trans }}</h4>{% endif %}
+                        {{ alert.message|trans }}
+                    </div>
+        {%- endfor %}
+    {%- endfor %}
+{% endif %}
+{% if ArrayPanier is defined %}
+<h1>Récapitulatif de votre panier :</h1>
+<table class="table table-responsive table-bordered table-hover">
+	<thead class="text-center">
+	<tr>
+		<th>
+			Nom
+		</th>
+		<th>
+			Description
+		</th>
+		<th>
+			Prix/Kilo
+		</th>
+		<th>
+			Quantité
+		</th>
+		<th>
+			Actions
+		</th>
+	</tr>
+	</thead>
+	<tbody>
+{% for produitPanier in ArrayPanier %}
+	<tr class="infoTr text-center form-group">
+			<td class="nomProd">{{ produitPanier.objet.getNomProduit() }}</td>
+			<td class="text-left">{{ produitPanier.objet.getDescriptionProduit() }}</td>
+			<td><span class="prixKProd">{{ produitPanier.objet.getPrixKiloProduit() }}</span>  €/K</td>
+			<td><input type="number" class="form-control text-center quantite" data-id="{{ produitPanier.objet.getIdProduit() }}" value="{{ produitPanier.quantite }}"></td>
+			<td>
+				<button class="btn btn-md btn-danger btnRemove" data-id="{{ produitPanier.objet.getIdProduit() }}">Supprimer du panier <span class="glyphicon glyphicon-remove"></span></button>
+			</td>
+	</tr>
+	{% endfor %}
+	<tr class="totalTr form-group">
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td class="text-left">Total : <span class="totalTd pull-right"></span></td>
+	</tr>
+	</tbody>
+</table>
+<a class="btn btn-md btn-success btnValid pull-right" href="{{ path('validPanierScr') }}">Valider le panier <span class="glyphicon glyphicon-shopping-cart"></span></a>
+<script type="text/javascript">
+	$( document ).ready(function() {
+		total();
+	});
+	$(".quantite").bind('change', function () {
+		var id = $(this).data('id');
+		var quantite = $(this).val();
+		var nom = $(this).closest(".infoTr").find('.nomProd').html();
+		var reg = new RegExp(/^\d+$/);
+		var res = reg.test(quantite);
+		if(res == false || quantite < 1){
+			$(this).closest(".infoTr").find('.quantite').val(1);
+		} else {
+			quantite = parseInt(quantite);
+
+			$.ajax({
+			url: "{{ path('addPanierScr') }}",
+			type: "POST",
+			data: {id: id, quantite: quantite},
+			success: function(data){
+				var message = "Vous avez modifié la quantité de " + nom + "s.";
+				$('#infoAlert').html(message);
+				$('#infoAlert').fadeIn(300);
+				setTimeout(function(){
+					$('#infoAlert').fadeOut(1500);
+				}, 750);
+			}
+		});
+
+		}
+		total();
+	});
+
+	$(".btnRemove").click(function(){
+	var r = confirm("Voulez-vous vraiment supprimer le produit du panier ?");
+	if (r == true) {
+	var id = $(this).data('id');
+	var trc = $(this).closest(".infoTr");
+	$.ajax({
+			url: "{{ path('supprPanierScr') }}",
+			type: "POST",
+			data: {id: id},
+			success: function(data){
+				trc.remove();
+				if(data == "empty"){
+					window.location.href = "{{ path('panier') }}";
+				}
+			}
+		});
+	}
+	});
+
+	function total(){
+		var total = 0;
+		$(".infoTr").each(function( index ){
+			var prixKilo = $(this).find('.prixKProd').html();
+			prixKilo = parseInt(prixKilo);
+			quantProd = $(this).find('.quantite').val();
+			coutProd = prixKilo * quantProd;
+			total += coutProd;
+		});
+		$(".totalTd").html(total + " €");
+	}
+
+</script>
+	{% else %}
+	<h1>Votre panier est vide !</h1>
+{% endif %}
+{% endblock %}

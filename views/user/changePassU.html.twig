@@ -1,0 +1,111 @@
+{% extends 'layout.html.twig' %}
+{% block navBar %}
+	{% include 'defaultNav.html.twig' %}
+{% endblock %}
+{% block pageTitle %}Changer de mot de passe{% endblock %}
+
+{% block pageContent %}
+	<div class="well">
+		<form class="form-signin form-horizontal" role="form" action="changePassScrU" method="post">
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<input id="change_id" type="hidden" name="_id" class="form-control" value="{{ app.user.id }}"><br/>
+    				<label for="change_password">Nouveau mot de passe</label>
+					<input id="change_password" type="password" name="_password" class="form-control readonly" placeholder="Entrez votre nouveau mot de passe" required><br/>
+					<button class="btn btn-danger passwordAction col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-2" data-action="vider" type="button"><span class="glyphicon glyphicon-remove"></span> Vider</button>
+					<button class="btn btn-warning passwordAction col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-2" data-action="retirer" type="button"><span class="glyphicon glyphicon-erase"></span> Retirer</button><br/>
+					<div id="pavePassChange"></div><br/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<button type="submit" class="btn btn-default btn-primary pull-right"><span class="glyphicon glyphicon-log-in"></span> Modifier</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<script>     
+	$(document).ready(function() {
+		var tmp;
+			$(".readonly").keydown(function(e){
+				e.preventDefault();
+			});
+			constructPave();
+			$("#pavePassChange").html(constructAffichage());
+
+		$('td').click(function(){
+			if($('#change_password').val().length <= 6){
+				if($(this).data("touche") != " " || $(this).data("touche") === 0){
+						$('#change_password').val($('#change_password').val() + $(this).data('touche'));
+				} else {
+
+				}
+			}
+		});
+
+		$('.passwordAction').click(function(){
+			if($(this).data('action') == "vider"){
+					$('#change_password').val("");
+				}
+
+			if ($(this).data('action') == "retirer") {
+					$('#change_password').val($('#change_password').val().slice( 0, -1));
+			}
+		});
+	});
+
+	var nombreDispo = new Array();
+	var paveNum = new Array();
+	function constructPave(){
+		for (var i = 0; i < 10; i++) {
+			nombreDispo.push(i);
+		};
+
+		for(var i = 0; i < 4; i++)
+		{
+			temp = new Array();
+			for(var j = 0; j < 4; j++)
+			{
+				temp.push(" ");
+			}
+			paveNum.push(temp);
+		};
+		remplirPave();
+	};
+
+	function remplirPave(){
+		while(nombreDispo.length > 0){
+			var x = Math.floor(Math.random() * 4) + 0;
+			var y = Math.floor(Math.random() * 4) + 0;
+
+			if(paveNum[x][y] == " "){
+				paveNum[x][y] = nombreDispo.pop();
+			}
+		}
+	}
+
+	function constructAffichage(){
+		var display = "<div class='paveNum'><table class='table borderless motDePasseTable'>"
+		for(var i = 0; i < paveNum.length; i++)
+		{
+			display += "<tr>";
+			for(var j = 0; j < paveNum.length; j++)
+			{
+				if(paveNum[i][j] == " " && paveNum[i][j] != 0){
+					display += "<td id='numPad_" + paveNum[i][j] + "' data-touche='" + paveNum[i][j] + "' class='motDePasseTableButton'y>&ensp;</td>";
+				} else {
+					display += "<td id='numPad_" + paveNum[i][j] + "' data-touche='" + paveNum[i][j] + "' class='motDePasseTableButton unselectable'>" + paveNum[i][j] + "</td>";
+				}
+			}
+			display += "</tr>";
+		}
+		display += "</table>";
+
+		display += "</div>";
+
+	   
+		return display;
+	}
+	</script>
+{% endblock %}

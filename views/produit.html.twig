@@ -1,0 +1,91 @@
+{% extends 'layout.html.twig' %}
+{% block navBar %}
+	{% include 'defaultNav.html.twig' %}
+{% endblock %}
+{% block pageTitle %}Produits{% endblock %}
+
+{% block pageContent %}
+	<div class="alert alert-success" id="infoAlert" role="alert" hidden></div>
+	{% for produit in ProduitsALL %}
+		{% if loop.index is divisible by(2) %}
+			<!-- First Featurette -->
+			<div class="featurette prod">
+				<img class="featurette-image img-circle img-responsive pull-left" width="400" height="350" src="pics/produit/{{ produit.getImageProduit() }}">
+				<h2 class="featurette-heading nomProd">{{ produit.getNomProduit() }}</h2>
+				<p class="lead">{{ produit.getDescriptionProduit() }}</p>
+				<p class="lead">{{ produit.getPrixKiloProduit() }}€ / Kg</p>
+				<p class="lead">Stock disponible : {{ produit.getStock() }} Unités</p>
+				{% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
+				<div class="col-xs-4 col-md-4 col-lg-4">
+					<input type="number" class="lead text-center quantite form-control" value="1">
+				</div>
+				<button class="btn btn-lg btn-success btnSend" data-id="{{ produit.getIdProduit }}">Ajouter au panier <span class="glyphicon glyphicon-cutlery"></span></button>
+				{% else %}
+					<a class="btn btn-lg btn-success" href="{{ path('login') }}">Connectez vous pour commencer vos achats <span class="glyphicon glyphicon-shopping-cart"></span></a>
+				{% endif %}
+			</div>
+			<hr class="featurette-divider">
+		{% else %}
+			<!-- First Featurette -->
+			<div class="featurette prod">
+				<img class="featurette-image img-circle img-responsive pull-right" width="400" height="350" src="pics/produit/{{ produit.getImageProduit() }}">
+				<h2 class="featurette-heading nomProd">{{ produit.getNomProduit() }}</h2>
+				<p class="lead">{{ produit.getDescriptionProduit() }}</p>
+				<p class="lead">{{ produit.getPrixKiloProduit() }}€ / Kg</p>
+				<p class="lead">Stock disponible : {{ produit.getStock() }} Unités</p>
+				{% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
+					<div class="col-xs-4 col-md-4 col-lg-4">
+					<input type="number" class="lead text-center quantite form-control" value="1">
+					</div>
+					<button class="btn btn-lg btn-success btnSend" data-id="{{ produit.getIdProduit }}">Ajouter au panier <span class="glyphicon glyphicon-cutlery"></span></button>
+				{% else %}
+					<a class="btn btn-lg btn-success" href="{{ path('login') }}">Connectez vous pour commencer vos achats <span class="glyphicon glyphicon-shopping-cart"></span></a>
+				{% endif %}
+			</div>
+			<hr class="featurette-divider">
+		{% endif %}
+	{% endfor %}
+	<script type="text/javascript">
+		$(".btnSend").click(function(){
+			var id = $(this).data('id');
+			var quantite = $(this).closest(".prod").find('.quantite').val();
+			var nom = $(this).closest(".prod").find('.nomProd').html();
+			var reg = new RegExp(/^\d+$/);
+			var res = reg.test(quantite);
+			if(res == false && quantite < 1){
+				$(this).closest(".infoTr").find('.quantite').val(1)
+			} else {
+
+				$.ajax({
+				url: "{{ path('gopanier') }}",
+				type: "POST",
+				data: {prod_id: id, quantite: quantite},
+				success: function(data){
+					console.log(nom);
+					var message = "Vous avez ajouté " + quantite + " kilos de " + nom + "s dans votre panier.";
+					$('#infoAlert').html(message);
+					$('#infoAlert').fadeIn(300);
+					setTimeout(function(){
+						$('#infoAlert').fadeOut(1000);
+					}, 5000);
+				}
+			});
+
+			}
+		});
+
+		$(".quantite").bind('change', function () {
+			var reg = new RegExp(/^\d+$/);
+			var res = reg.test($(this).val());
+			if(res == false || quantite < 1){
+				$(this).val(1);
+			}
+		});
+	</script>
+{% endblock %}
+
+
+
+
+
+

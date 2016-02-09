@@ -1,0 +1,96 @@
+{% extends 'layout.html.twig' %}
+
+{% block pageTitle %}Authentification{% endblock %}
+
+
+{% block navBar %}
+	{% include 'admin/adminNav.html.twig' %}
+{% endblock %}
+
+{% block pageContent %}
+<table class="table table-responsive table-bordered table-hover text-center">
+	<thead>
+	<tr>
+		<th>
+			Identifiant :
+		</th>
+		<th>
+			Utilisateur :
+		</th>
+		<th>
+			Mot de passe :
+		</th>
+		<th>
+			Niveau :
+		</th>
+		<th>
+			Actions :
+		</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for user in tableauUsers %}
+		<tr>
+			<td>
+				{{ user.getId() }}
+			</td>
+			<td>
+				{{ user.getUsername() }}
+			</td>
+			<td class="passTD" data-iduser="{{ user.getId() }}">
+				{{ user.getPassword() }}
+			</td>
+			<td>
+				{% if user.getRole() == "ROLE_ADMIN" %}
+					Administrateur
+				{% else %}
+					Utilisateur
+				{% endif %}
+			</td>
+			<td>
+				<form action="#" method="post">
+				<input name="user_id" id="user_id_{{ user.getId() }}" type="number" value="{{ user.getId() }}" hidden>
+				<button class="btn btn-md btn-default editPassBtn" data-iduser="{{ user.getId() }}" type="submit">Editer le mot de passe <span class="glyphicon glyphicon-pencil"></span></button>
+				</form>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	$(".editPassBtn").click(function(event){
+  		event.preventDefault();
+  		var idTmp = $(this).data('iduser');
+  		var r = confirm("Voulez-vous vraiment éditer le mot de passe ?");
+		if (r == true) {
+			var mdpTmp = prompt("Entrez le nouveau mot de passe.", "");
+			if (mdpTmp != null) {
+				var reg = new RegExp('^\\d+$');
+				if(reg.test(mdpTmp) == false){
+					alert("Le mot de passe ne doit contenir que des chiffres.");
+				} else {
+					if(mdpTmp.length > 6){
+						alert("Le mot de passe doit avoir une taille maximal de 6 chiffres.");
+					} else {
+						$.ajax({
+							url: "{{ path('changePassScr') }}",
+							type: "POST",
+							data: {id: idTmp, mdp: mdpTmp},
+							success: function(data){
+								$('.passTD[data-iduser="' + idTmp + '"]').html(data);
+								alert("Vous avez saisie le mot de passe suivant : " + mdpTmp);
+							}
+						});
+					}
+
+				}
+
+			}
+		} else {
+
+		}
+	});
+</script>
+
+{% endblock %}

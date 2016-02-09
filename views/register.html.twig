@@ -1,0 +1,159 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block pageContent %}
+<h2 class="text-center">{{ block('title') }}</h2>
+{% if error %}
+<div class="alert alert-danger">
+	<strong>L'inscription à échoué</strong> {{ error }}
+</div>
+{% endif %}
+<div class="well">
+	<form class="form-signin form-horizontal" role="form" action="{{ path('register_check') }}" method="post">
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<label for="username">Nom d'utilsateur</label>
+				<input type="text" name="_username" id="username" value="{{ last_username }}" class="form-control" placeholder="Entrez votre nom d'utilisateur" required autofocus>
+				<p class="help-block">Pour vous connecter au site.</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<label for="register_password">Mot de passe</label>
+				<input id="register_password" type="password" name="_password" class="form-control readonly" placeholder="Entrez votre mot de passe" required>
+				<p class="help-block">Utilisez le pavé numérique ci-dessous.</p><br/>
+				<button class="btn btn-danger passwordAction col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-2" data-action="vider" type="button"><span class="glyphicon glyphicon-remove"></span> Vider</button>
+				<button class="btn btn-warning passwordAction col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-2" data-action="retirer" type="button"><span class="glyphicon glyphicon-erase"></span> Retirer</button><br/>
+				<div id="pavePassLogin"></div><br/>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			<label for="mail">Adresse mail</label>
+			<input type="mail" name="_mail" id="mail" class="form-control" placeholder="Entrez votre adresse email" required autofocus>
+			<p class="help-block">Pour vous contactez en cas de nécessiter.</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			<label for="tel">Numéro de téléphone</label>
+			<input type="tel" name="_tel" id="tel" class="form-control" placeholder="Entrez votre numéro de téléphone" required autofocus>
+			<p class="help-block">Pour vous contactez en cas de nécessiter.</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			<label for="ville">Ville de livraison</label>
+			<input type="text" name="_ville" id="ville" class="form-control" placeholder="Entrez votre ville" required autofocus>
+			<p class="help-block">Vérifiez bien les informations, elles nous servent à vous livrer.</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+			<label for="adresse">Adresse de livraison</label>
+			<input type="text" name="_adresse" id="adresse" class="form-control" placeholder="Entrez votre adresse physique" required autofocus>
+			<p class="help-block">Vérifiez bien les informations, elles nous servent à vous livrer.</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<button type="submit" class="btn btn-default btn-primary pull-right"><span class="glyphicon glyphicon-ok"></span> Inscription</button>
+			</div>
+		</div>
+	</form>
+	<a href="{{ path('login')}}" class="btn btn-default btn-primary pull-right">Déjà un compte ? Connectez-vous !</a><br/>
+</div>
+
+<script>     
+$(document).ready(function() {
+	var tmp;
+
+	$(".readonly").keydown(function(e){
+			e.preventDefault();
+	});
+
+	constructPave();
+	$("#pavePassLogin").html(constructAffichage());
+
+	$('td').click(function(){
+		if($('#register_password').val().length <= 6){
+			if($(this).data("touche") != " " || $(this).data("touche") === 0){
+					$('#register_password').val($('#register_password').val() + $(this).data('touche'));
+			} else {
+
+			}
+		}
+	});
+
+	$('.passwordAction').click(function(){
+		if($(this).data('action') == "vider"){
+			if($(this).parent().parent().attr('id') == "login-form"){
+				$('#login_password').val("");
+			} else {
+				$('#register_password').val("");
+			}
+		} else if ($(this).data('action') == "retirer") {
+			if($(this).parent().parent().attr('id') == "login-form"){
+				$('#login_password').val($('#login_password').val().slice( 0, -1));
+			} else {
+				$('#register_password').val($('#register_password').val().slice( 0, -1));
+			}
+		};
+	});
+});
+
+	var nombreDispo = new Array();
+	var paveNum = new Array();
+	function constructPave(){
+		for (var i = 0; i < 10; i++) {
+			nombreDispo.push(i);
+		};
+
+		for(var i = 0; i < 4; i++)
+		{
+			temp = new Array();
+			for(var j = 0; j < 4; j++)
+			{
+				temp.push(" ");
+			}
+			paveNum.push(temp);
+		};
+		remplirPave();
+	};
+
+	function remplirPave(){
+		while(nombreDispo.length > 0){
+			var x = Math.floor(Math.random() * 4) + 0;
+			var y = Math.floor(Math.random() * 4) + 0;
+
+			if(paveNum[x][y] == " "){
+				paveNum[x][y] = nombreDispo.pop();
+			}
+		}
+	}
+
+	function constructAffichage(){
+		var display = "<div class='paveNum'><table class='table borderless motDePasseTable'>"
+		for(var i = 0; i < paveNum.length; i++)
+		{
+			display += "<tr>";
+			for(var j = 0; j < paveNum.length; j++)
+			{
+				if(paveNum[i][j] == " " && paveNum[i][j] != 0){
+					display += "<td id='numPad_" + paveNum[i][j] + "' data-touche='" + paveNum[i][j] + "' class='motDePasseTableButton'y>&ensp;</td>";
+				} else {
+					display += "<td id='numPad_" + paveNum[i][j] + "' data-touche='" + paveNum[i][j] + "' class='motDePasseTableButton unselectable'>" + paveNum[i][j] + "</td>";
+				}
+			}
+			display += "</tr>";
+		}
+		display += "</table>";
+
+		display += "</div>";
+
+	   
+		return display;
+	}
+	</script>
+{% endblock %}

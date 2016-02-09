@@ -1,0 +1,47 @@
+{% extends 'layout.html.twig' %}
+
+{% block pageTitle %}Authentification{% endblock %}
+
+
+{% block navBar %}
+	{% include 'admin/adminNav.html.twig' %}
+{% endblock %}
+
+{% block pageContent %}
+	<div class="well">
+		<form class="form-signin form-horizontal" role="form" action="{{ path('addProdScr') }}" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+    				<label for="prod_nom">Nom du produit</label>
+					<input id="prod_nom" type="text" name="_nom" class="form-control" value="">
+					<p class="help-block">Le nom de votre fruit.</p><br/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<label for="prod_description">Description du produit</label>
+					<textarea id="prod_description" type="text" name="_desc" class="form-control"></textarea>
+					<p class="help-block">Ajoutez une petite description vendeuse.</p><br/>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<label for="prod_prix">Prix au kilo du produit</label>
+					<input id="prod_prix" type="number" name="_prix" class="form-control">
+					<p class="help-block">Indiquez le prix au kilo.</p><br/>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<label for="prod_photo">Photo du produit</label>
+					<input id="prod_photo" type="file" name="_photo" class="form-control">
+					<p class="help-block">Choisissez une photo qui embelit votre produit.</p><br/>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+					<label for="prod_stock">Stock du produit</label>
+					<input id="prod_stock" type="number" name="_stock" class="form-control">
+					<p class="help-block">Combien de kilos avez vous en stock ?</p><br/>
+				<button type="submit" class="btn btn-default btn-primary pull-right"><span class="glyphicon glyphicon-log-in"></span> Ajouter le produit</button>
+			</div>
+		</form>
+	</div>
+{% endblock %}
